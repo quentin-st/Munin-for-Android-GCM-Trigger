@@ -11,7 +11,7 @@ You have to install this script on the master server of your munin installation.
 You only have to install this script once, even if several Android devices will be notified.
 
 ### Install & configure the script
-
+Install the script wherever you want.
 
 ### Configure munin
 We have to configure munin in order to make it call this script on each alert.
@@ -26,7 +26,7 @@ Open `/etc/munin/munin.conf`, and configure it as following:
     contact.munin_for_android.always_send warning critical
     
     # Set infos format
-    contact.munin_for_android.text  <munin group="${var:group}" host="${var:host}"\
+    contact.munin_for_android.text  <alert group="${var:group}" host="${var:host}"\
       graph_category="${var:graph_category}" graph_title="${var:graph_title}" >\
       ${loop< >:wfields <warning label="${var:label}" value="${var:value}"\
         w="${var:wrange}" c="${var:crange}" extra="${var:extinfo}" /> }\
@@ -34,5 +34,5 @@ Open `/etc/munin/munin.conf`, and configure it as following:
         w="${var:wrange}" c="${var:crange}" extra="${var:extinfo}" /> }\
       ${loop< >:ufields <unknown label="${var:label}" value="${var:value}"\
         w="${var:wrange}" c="${var:crange}" extra="${var:extinfo}" /> }\
-      </munin>
+      </alert>
 
