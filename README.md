@@ -1,26 +1,41 @@
-# Munin-for-Android-GCM-Trigger
-Python script called by munin, sending signals to Munin-for-Android-GCM-Proxy
+# Munin for Android GCM Trigger
+Python script called by munin, sending signals to [Munin for Android GCM Proxy](https://github.com/chteuchteu/Munin-for-Android-GCM-Proxy).
 
 You have to install this script on the master server of your munin installation. Here's how it works:
 
 1. munin detects an alert and calls this script
 2. This script sends the signal with plugin information to the proxy, relaying the info to Google Cloud Messaging
-3. An alert appears on your device
+3. An alert appears on your devices
 
 ## Installation
 You only have to install this script once, even if several Android devices will be notified.
 
 ### Install & configure the script
 
-The script relies on the [requests](https://github.com/kennethreitz/requests) library to communicate with Google Cloud Messaging. Make sure the lib is present on your system by running the following command first (you might need to `sudo` it on some systems) : 
+The script relies on the [requests](https://github.com/kennethreitz/requests) library to communicate with Google Cloud
+Messaging. Make sure the lib is present on your system by running the following command first (you might need to `sudo` it on some systems) : 
 
 ```bash
 pip install requests
 ```
 
-You can then install the script **wherever you want**.
-Open the devices.py file and add the code sent to you by mail by Munin for Android
-in this file. It will look like this:
+Clone this repository on your server to download the script, or just download it as a ZIP archive:
+    
+    # Navigate to the script final place. /root/ or /home/your_user/ is a good place.
+    cd ~
+    
+    # Clone the repo
+    git clone https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger.git
+    
+    # ... OR download the ZIP archive
+    wget https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger/archive/master.zip
+    unzip master.zip -d Munin-for-Android-GCM-Trigger
+    rm master.zip
+    
+If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
+the app and hit the *Send me the instructions by mail* button.
+
+Open the `devices.py` file and add the device id(s) in it. It should look like this:
 
     #!/usr/bin/python
     # -*- coding: utf-8 -*-
@@ -28,8 +43,21 @@ in this file. It will look like this:
     # ...
     
     devices = [
-    
+        'VOPCG0LUaXWcnl56g2yp',
+        'BLlWcH6Rh7Sb3t1S4bY1',
+        'dkOoc2qDCtaHvY5yJSg7'
     ]
+
+
+### Test it
+Once done, you can check if the script works by running the test command:
+
+    # Navigate to the script directory if necessary:
+    # cd Munin-for-Android-GCM-Trigger
+    
+    python test.py
+
+A confirmation notification should appear on all your devices.
 
 
 ### Configure munin
