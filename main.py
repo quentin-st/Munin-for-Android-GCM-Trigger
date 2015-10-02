@@ -5,7 +5,8 @@ import requests
 import json
 from devices import devices
 
-GCM_PROXY_URL = 'http://gcm-proxy.munin-for-android.com'
+GCM_PROXY_URL = 'http://gcm-proxy.munin-for-android.com/trigger/declareAlert'
+GCM_PROXY_TEST_URL = 'http://gcm-proxy.munin-for-android.com/trigger/test'
 
 
 # Check if there are devices
