@@ -19,6 +19,18 @@ pip install requests
 ```
 
 You can then install the script **wherever you want**.
+Open the devices.py file and add the code sent to you by mail by Munin for Android
+in this file. It will look like this:
+
+    #!/usr/bin/python
+    # -*- coding: utf-8 -*-
+    
+    # ...
+    
+    devices = [
+    
+    ]
+
 
 ### Configure munin
 We have to configure munin in order to make it call this script on each alert.
