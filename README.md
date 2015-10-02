@@ -11,7 +11,14 @@ You have to install this script on the master server of your munin installation.
 You only have to install this script once, even if several Android devices will be notified.
 
 ### Install & configure the script
-Install the script wherever you want.
+
+The script relies on the [requests](https://github.com/kennethreitz/requests) library to communicate with Google Cloud Messaging. Make sure the lib is present on your system by running the following command first (you might need to `sudo` it on some systems) : 
+
+```bash
+pip install requests
+```
+
+You can then install the script **wherever you want**.
 
 ### Configure munin
 We have to configure munin in order to make it call this script on each alert.
