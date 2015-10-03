@@ -57,12 +57,13 @@ Once done, you can check if the script works by running the test command:
     
     python test.py
 
-A confirmation notification should appear on all your devices.
+A confirmation notification should appear on all of your devices:
+![Test notification](README_testNotification.png)
 
 
 ### 3. Configure munin
 We have to configure munin in order to make it call this script on each alert.
-Open `/etc/munin/munin.conf`, and configure it as following:
+Open `/etc/munin/munin.conf`, and configure it as following. Replace /path/to/script/ with the script location.
     
     # Munin for Android notifications
     # Configure script location & args
