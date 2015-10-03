@@ -31,6 +31,10 @@ Clone this repository on your server to download the script, or just download it
     wget https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger/archive/master.zip
     unzip master.zip -d Munin-for-Android-GCM-Trigger
     rm master.zip
+
+Don't forget to mark main file as executable:
+    
+    chmod u+x main.py
     
 If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
 the app and hit the *Send me the instructions by mail* button.
@@ -55,7 +59,7 @@ Once done, you can check if the script works by running the test command:
     # Navigate to the script directory if necessary:
     # cd Munin-for-Android-GCM-Trigger
     
-    python test.py
+    python main.py --test
 
 A confirmation notification should appear on all of your devices:
 ![Test notification](README_testNotification.png)
@@ -67,7 +71,7 @@ Open `/etc/munin/munin.conf`, and configure it as following. Replace /path/to/sc
     
     # Munin for Android notifications
     # Configure script location & args
-    contact.munin_for_android.command | /path/to/script /path/to/script \
+    contact.munin_for_android.command | /path/to/script/main.py /path/to/script/main.py \
        --cmdlineargs="${var:group} ${var:host} ${var:graph_category} '${var:graph_title}'"
     
     # Configure alerts level
