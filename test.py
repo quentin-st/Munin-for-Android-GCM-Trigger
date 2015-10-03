@@ -4,7 +4,7 @@ import sys
 import requests
 import json
 from devices import devices
-from main import GCM_PROXY_TEST_URL
+from const import GCM_PROXY_TEST_URL
 
 
 # Check if there are devices
