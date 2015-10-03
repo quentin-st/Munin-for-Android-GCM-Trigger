@@ -10,7 +10,7 @@ You have to install this script on the master server of your munin installation.
 ## Installation
 You only have to install this script once, even if several Android devices will be notified.
 
-### Install & configure the script
+### 1. Install & configure the script
 
 The script relies on the [requests](https://github.com/kennethreitz/requests) library to communicate with Google Cloud
 Messaging. Make sure the lib is present on your system by running the following command first (you might need to `sudo` it on some systems) : 
@@ -49,7 +49,7 @@ Open the `devices.py` file and add the device id(s) in it. It should look like t
     ]
 
 
-### Test it
+### 2. Test it
 Once done, you can check if the script works by running the test command:
 
     # Navigate to the script directory if necessary:
@@ -60,7 +60,7 @@ Once done, you can check if the script works by running the test command:
 A confirmation notification should appear on all your devices.
 
 
-### Configure munin
+### 3. Configure munin
 We have to configure munin in order to make it call this script on each alert.
 Open `/etc/munin/munin.conf`, and configure it as following:
     
