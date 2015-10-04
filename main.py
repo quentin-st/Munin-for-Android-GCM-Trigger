@@ -32,6 +32,10 @@ if __name__ == '__main__':
         for line in sys.stdin:
             std_input += line
 
+        # Wrap XML structure inside a single node:
+        # <alert /><alert /> becomes <a><alert /><alert /></a>
+        std_input = '<a>' + std_input + '</a>'
+
         response = requests.post(GCM_PROXY_URL, data={
             'reg_ids': json.dumps(devices),
             'data': std_input
