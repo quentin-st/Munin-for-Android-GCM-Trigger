@@ -28,13 +28,11 @@ if __name__ == '__main__':
         except requests.exceptions.HTTPError as e:
             print "HTTP error: ", e.message
     else:
-        std_input = ''
-        for line in sys.stdin:
-            std_input += line
+        data = ''.join(sys.stdin.readlines())
 
         # Wrap XML structure inside a single node:
         # <alert /><alert /> becomes <a><alert /><alert /></a>
-        std_input = '<a>' + std_input + '</a>'
+        std_input = '<a>' + data + '</a>'
 
         response = requests.post(GCM_PROXY_URL, data={
             'reg_ids': json.dumps(devices),
