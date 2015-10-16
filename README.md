@@ -19,10 +19,15 @@ Messaging. Make sure the lib is present on your system by running the following 
 pip install requests
 ```
 
+You must put this script in a directory accessible by munin. A good place would be /home/munin:
+
+    sudo mkdir /home/munin
+    sudo chown "$USER":munin /home/munin
+
 Clone this repository on your server to download the script, or just download it as a ZIP archive:
     
-    # Navigate to the script final place. /root/ or /home/your_user/ is a good place.
-    cd ~
+    # Navigate to the script final place
+    cd /home/munin
     
     # Clone the repo
     git clone https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger.git
@@ -31,10 +36,14 @@ Clone this repository on your server to download the script, or just download it
     wget https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger/archive/master.zip
     unzip master.zip -d Munin-for-Android-GCM-Trigger
     rm master.zip
+    
+    # Update directory permissions
+    sudo chown -R "$USER":munin Munin-for-Android-GCM-Trigger
+    
 
 Don't forget to mark main file as executable:
     
-    chmod u+x main.py
+    chmod ug+x main.py
     
 If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
 the app and hit the *Send me the instructions by mail* button.
@@ -67,15 +76,14 @@ A confirmation notification should appear on all of your devices:
 
 ### 3. Configure munin
 We have to configure munin in order to make it call this script on each alert.
-Open `/etc/munin/munin.conf`, and configure it as following. Replace /path/to/script/ with the script location.
+Open `/etc/munin/munin.conf`, and configure it as following. Replace /home/munin/Munin-for-Android-GCM-Trigger/ with the script location.
     
     # Munin for Android notifications
     # Configure script location & args
-    contact.munin_for_android.command | /path/to/script/main.py /path/to/script/main.py \
-       --cmdlineargs="${var:group} ${var:host} ${var:graph_category} '${var:graph_title}'"
+    contact.munin_for_android.command /home/munin/Munin-for-Android-GCM-Trigger/main.py
     
-    # Configure alerts level
-    contact.munin_for_android.always_send warning critical
+    # Uncomment this if you want to be notified every 5 minutes about every alert
+    # contact.munin_for_android.always_send warning critical
     
     # Set infos format
     contact.munin_for_android.text  <alert group="${var:group}" host="${var:host}"\
