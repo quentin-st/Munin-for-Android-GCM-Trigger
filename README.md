@@ -43,6 +43,7 @@ Clone this repository on your server to download the script, or just download it
 
 Don't forget to mark main file as executable:
     
+    cd Munin-for-Android-GCM-Trigger
     chmod ug+x main.py
     
 If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
@@ -96,3 +97,6 @@ Open `/etc/munin/munin.conf`, and configure it as following. Replace /home/munin
         w="${var:wrange}" c="${var:crange}" extra="${var:extinfo}" /> }\
       </alert>
 
+Restart `munin-node` service to reload configuration:
+
+    service munin-node restart
