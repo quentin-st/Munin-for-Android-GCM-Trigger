@@ -5,7 +5,7 @@ import requests
 import json
 import argparse
 from devices import devices
-from const import GCM_PROXY_URL, GCM_PROXY_TEST_URL
+from const import GCM_PROXY_URL, GCM_PROXY_TEST_URL, HELP_DIAGNOSE
 
 if __name__ == '__main__':
 
@@ -36,5 +36,6 @@ if __name__ == '__main__':
 
         response = requests.post(GCM_PROXY_URL, data={
             'reg_ids': json.dumps(devices),
-            'data': std_input
+            'data': std_input,
+            'help_diagnose': HELP_DIAGNOSE
         })
