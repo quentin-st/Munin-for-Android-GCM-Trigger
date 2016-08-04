@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import sys
 import requests
 import json
 import argparse
 from devices import devices
-from const import GCM_PROXY_URL, GCM_PROXY_TEST_URL, HELP_DIAGNOSE
+from const import GCM_PROXY_URL, GCM_PROXY_TEST_URL, HELP_DIAGNOSE, CONTRIBUTE_TO_STATS
 
 if __name__ == '__main__':
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            print "HTTP error: ", e.message
+            print("HTTP error: ", e.response)
     else:
         data = ''.join(sys.stdin.readlines())
 
@@ -37,5 +37,6 @@ if __name__ == '__main__':
         response = requests.post(GCM_PROXY_URL, data={
             'reg_ids': json.dumps(devices),
             'data': std_input,
-            'help_diagnose': HELP_DIAGNOSE
+            'help_diagnose': HELP_DIAGNOSE,
+            'contribute_to_stats': CONTRIBUTE_TO_STATS
         })
