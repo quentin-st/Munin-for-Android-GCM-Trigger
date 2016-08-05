@@ -57,3 +57,6 @@ docs/_build/
 target/
 
 .idea
+devices.json
+devices.py
+devices.py.bak

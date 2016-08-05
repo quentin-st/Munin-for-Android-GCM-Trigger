@@ -55,19 +55,16 @@ chmod ug+x main.py
 If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
 the app and hit the *Send me the instructions by mail* button.
 
-Open the `devices.py` file and add the device id(s) in it. It should look like this:
+Open the `devices.json` file and add the device id(s) in it. It should look like this:
 
-```python
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
-# ...
-
-devices = [
-    'VOPCG0LUaXWcnl56g2yp',
-    'BLlWcH6Rh7Sb3t1S4bY1',
-    'dkOoc2qDCtaHvY5yJSg7'
-]
+```json
+{
+    "devices": [
+        "VOPCG0LUaXWcnl56g2yp",
+        "BLlWcH6Rh7Sb3t1S4bY1",
+        "dkOoc2qDCtaHvY5yJSg7"
+    ]
+}
 ```
 
 ### 2. Test it
