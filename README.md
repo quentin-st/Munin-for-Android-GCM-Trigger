@@ -7,6 +7,8 @@ You have to install this script on the master server of your munin installation.
 2. This script sends the signal with plugin information to the proxy, relaying the info to Google Cloud Messaging
 3. An alert notification appears on your devices
 
+> Tip: Watch + Star this repository to be notified when a new version of this script comes out!
+
 ## Installation
 You only have to install this script once, even if several Android devices will be notified.
 
@@ -110,4 +112,40 @@ service munin-node restart
 
 **That's it!**
 
-> Tip: Watch + Star this repository to be notified when a new version of this script comes out!
+## Update this script
+If you're unsure about how you installed this script, check if a `.git/` directory
+exists inside the script directory. If it does, follow the instructions under (1).
+
+1. You installed it using `git clone https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger.git`:
+    You just have to run `git pull` to update it. If you encounter `error: Your local changes to the following
+    files would be overwritten by merge:` error, check the
+    files list below the error message:
+    
+    - if it contains `devices.py`, save it (`cp devices.py devices.py.bak`), pull (`git pull`) and restore it (`mv devices.py.bak devices.py`)
+    - otherwise, undo these changes (`git checkout -- .`) and pull (`git pull`)
+    
+    You'll be more likely to encounter this error if you're updating from a version cloned before
+    August 2016 - we fixed everything in the meantime.
+ 
+2. You installed it by downloading the ZIP archive:
+    
+    ```bash
+    # Move the script to another location
+    mv Munin-for-Android-GCM-Trigger Munin-for-Android-GCM-Trigger.bak
+    
+    # Download its latest version
+    wget https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger/archive/master.zip
+    unzip master.zip -d Munin-for-Android-GCM-Trigger
+    rm master.zip
+    
+    # Copy back the devices list from the previous install
+    cp Munin-for-Android-GCM-Trigger.bak/devices.py Munin-for-Android-GCM-Trigger/devices.py
+    
+    # If you customized values in const.py (GCM_PROXY_URL, HELP_DIAGNOSE or whatever), don't forget to update them in the new location
+    ```
+
+**In both cases, test the updated version**:
+
+```bash
+cd Munin-for-Android-GCM-Trigger && ./main.py --test
+```
