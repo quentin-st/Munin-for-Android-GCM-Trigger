@@ -57,14 +57,21 @@ chmod ug+x main.py
 If not already done, request your unique device id for each device you'll use. Navigate to the notifications screen on
 the app and hit the *Send me the instructions by mail* button.
 
-Open the `devices.json` file and add the device id(s) in it. It should look like this:
+Call this script using the `--add-device DEVICE_ID` argument or manually edit the `devices.json` file
+and add the device id(s) in it. When interactively adding your device using `--add-device`, you'll
+have the choice to send a test notification to the devices passed as argument.
 
+```bash
+./main.py --add-device VOPCG0LUaXWcnl56g2yp...
+```
+
+The `devices.json` file should look like this:
 ```json
 {
     "devices": [
-        "VOPCG0LUaXWcnl56g2yp",
-        "BLlWcH6Rh7Sb3t1S4bY1",
-        "dkOoc2qDCtaHvY5yJSg7"
+        "VOPCG0LUaXWcnl56g2yp...",
+        "BLlWcH6Rh7Sb3t1S4bY1...",
+        "dkOoc2qDCtaHvY5yJSg7..."
     ]
 }
 ```
