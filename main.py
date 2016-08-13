@@ -13,6 +13,69 @@ devices_filename_old = 'devices.py'
 devices_filename_old_bak = 'devices.py.bak'
 
 
+def get_devices():
+    if os.path.isfile(devices_filename_old):
+        # Silently migrate from old format to new one
+        migrate()
+
+    # Parse devices list
+    with open(devices_filename, 'r') as file:
+        try:
+            return json.load(file)['devices']
+        except ValueError as e:
+            print('Could not parse {}, please check its syntax'.format(devices_filename))
+            print(e)
+            return None
+
+
+def do_test(test_devices):
+    # Send a test message to GCM. A success notification will be displayed on each device
+    response = requests.post(GCM_PROXY_TEST_URL, data={
+        'reg_ids': json.dumps(test_devices)
+    })
+
+    try:
+        status = response.raise_for_status()
+
+        print('Successfully sent a test notification to {} device(s)'.format(len(test_devices)))
+    except requests.exceptions.HTTPError as e:
+        print("HTTP error: ", e.response)
+
+
+def ask_yes_no(question, default="yes"):
+    """Ask a yes/no question via raw_input() and return their answer.
+
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits <Enter>.
+        It must be "yes" (the default), "no" or None (meaning
+        an answer is required of the user).
+
+    The "answer" return value is True for "yes" or False for "no".
+    http://code.activestate.com/recipes/577058/
+    """
+    valid = {"yes": True, "y": True, "ye": True,
+             "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = input().lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' "
+                             "(or 'y' or 'n').\n")
+
+
 def migrate():
     # Migrate from devices.py to devices.json
     if not os.path.isfile(devices_filename_old):
@@ -34,40 +97,36 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Receive alerts from munin and relay them to Google Cloud Messaging')
     parser.add_argument("--test", action="store_true", dest="test", default=False)
     parser.add_argument("--migrate", action="store_true", dest="migrate", default=False)
+    parser.add_argument("--add-device", dest="add_device")
     args = parser.parse_args()
 
     if args.migrate:
         migrate()
+    elif args.add_device is not None:
+        devices = get_devices()
+        reg_id = args.add_device
+
+        if reg_id not in devices:
+            devices.append(reg_id)
+
+            with open(devices_filename, 'w') as json_fh:
+                json.dump({'devices': devices}, json_fh, indent=4)
+
+            print('{} updated with {} device(s)'.format(devices_filename, len(devices)))
+        else:
+            print('{} already contains {}.'.format(devices_filename, reg_id))
+
+        if ask_yes_no('Do you want to send a test notification to this device?'):
+            do_test([reg_id])
     else:
-        if os.path.isfile(devices_filename_old):
-            # Silently migrate from old format to new one
-            migrate()
+        devices = get_devices()
 
-        # Parse devices list
-        with open(devices_filename, 'r') as file:
-            try:
-                devices = json.load(file)['devices']
-            except ValueError as e:
-                print('Could not parse {}, please check its syntax'.format(devices_filename))
-                print(e)
-                sys.exit(1)
-
-        if len(devices) == 0:
+        if devices is None or len(devices) == 0:
             print('{} is empty, aborting'.format(devices_filename))
             sys.exit(1)
 
         if args.test:
-            # Send a test message to GCM. A success notification will be displayed on each device
-            response = requests.post(GCM_PROXY_TEST_URL, data={
-                'reg_ids': json.dumps(devices)
-            })
-
-            try:
-                status = response.raise_for_status()
-
-                print('Successfully sent a test notification to your {} device(s)'.format(len(devices)))
-            except requests.exceptions.HTTPError as e:
-                print("HTTP error: ", e.response)
+            do_test(devices)
         else:
             data = ''.join(sys.stdin.readlines())
 
