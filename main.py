@@ -12,14 +12,19 @@ devices_filename = 'devices.json'
 devices_filename_old = 'devices.py'
 devices_filename_old_bak = 'devices.py.bak'
 
+self_path = os.path.dirname(__file__)
+devices_filepath = os.path.join(self_path, devices_filename)
+devices_filepath_old = os.path.join(self_path, devices_filename_old)
+devices_filepath_old_bak = os.path.join(self_path, devices_filename_old_bak)
+
 
 def get_devices():
-    if os.path.isfile(devices_filename_old):
+    if os.path.isfile(devices_filepath_old):
         # Silently migrate from old format to new one
         migrate()
 
     # Parse devices list
-    with open(devices_filename, 'r') as file:
+    with open(devices_filepath, 'r') as file:
         try:
             return json.load(file)['devices']
         except ValueError as e:
@@ -78,8 +83,8 @@ def ask_yes_no(question, default="yes"):
 
 def migrate():
     # Migrate from devices.py to devices.json
-    if not os.path.isfile(devices_filename_old):
-        print('Could not find {}, aborting'.format(devices_filename_old))
+    if not os.path.isfile(devices_filepath_old):
+        print('Could not find {}, aborting'.format(devices_filepath_old))
         sys.exit(1)
 
     from devices import devices
@@ -87,7 +92,7 @@ def migrate():
         json.dump({'devices': devices}, json_fh, indent=4)
 
     # Backup old file
-    shutil.move(devices_filename_old, devices_filename_old_bak)
+    shutil.move(devices_filepath_old, devices_filepath_old_bak)
 
     print('Migrated from {} to {} with {} device(s)'.format(devices_filename_old, devices_filename, len(devices)))
     print('{} has been moved to {}'.format(devices_filename_old, devices_filename_old_bak))
@@ -109,7 +114,7 @@ if __name__ == '__main__':
         if reg_id not in devices:
             devices.append(reg_id)
 
-            with open(devices_filename, 'w') as json_fh:
+            with open(devices_filepath, 'w') as json_fh:
                 json.dump({'devices': devices}, json_fh, indent=4)
 
             print('{} updated with {} device(s)'.format(devices_filename, len(devices)))
