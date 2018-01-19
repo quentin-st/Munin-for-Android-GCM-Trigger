@@ -9,16 +9,22 @@ import shutil
 from const import GCM_PROXY_URL, GCM_PROXY_TEST_URL, HELP_DIAGNOSE, CONTRIBUTE_TO_STATS
 
 devices_filename = 'devices.json'
+devices_filename_default = 'devices_default.json'
 devices_filename_old = 'devices.py'
 devices_filename_old_bak = 'devices.py.bak'
 
 self_path = os.path.dirname(__file__)
 devices_filepath = os.path.join(self_path, devices_filename)
+devices_filepath_default = os.path.join(self_path, devices_filename_default)
 devices_filepath_old = os.path.join(self_path, devices_filename_old)
 devices_filepath_old_bak = os.path.join(self_path, devices_filename_old_bak)
 
 
 def get_devices():
+    if not os.path.isfile(devices_filepath):
+        # Silently initialize the devices file from the default one
+        shutil.copyfile(devices_filepath_default, devices_filepath)
+
     if os.path.isfile(devices_filepath_old):
         # Silently migrate from old format to new one
         migrate()
